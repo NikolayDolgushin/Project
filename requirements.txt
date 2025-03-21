@@ -1,0 +1,9 @@
+asgiref==3.8.1
+django==5.1.7
+flake8==7.1.2
+mccabe==0.7.0
+pycodestyle==2.12.1
+pyflakes==3.2.0
+sqlparse==0.5.3
+psycopg2-binary==2.9.10
+pillow==11.1.0
