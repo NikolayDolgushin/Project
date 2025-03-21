@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список элементов</title>
+    <style>
+        .item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #000;
+        }
+        .item img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Список элементов</h1>
+    {% for item in items %}
+        <div class="item" align="center">
+            <!-- Изображение -->
+            <img src="{{ item.pic.url }}" alt="{{ item.name }}">
+            <a href="/clothes/{{item.pk}}">
+            <p>{{ item.name }}</p>
+            <p>{{ item.price }}</p>
+            </a>
+        </div>
+    {% endfor %}
+</body>
+</html>

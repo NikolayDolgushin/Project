@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ items.name }}</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .images {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .info {
+            flex: 1;
+        }
+        .images img {
+            max-width: 75%;
+            height: auto;
+
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ items.name }}</h1>
+    <div class="container">
+
+        <div class="images" align="right">
+            <img src="{{ items.pic.url }}" alt="{{ clothes.name }}">
+            <img src="{{ items.backpic.url }}" alt="Задняя сторона {{ clothes.name }}">
+        </div>
+        <div class="info">
+            <p><strong>Цвет:</strong> {{ items.color.name }}</p>
+            <p><strong>Цена:</strong> {{ items.price }} руб.</p>
+        </div>
+
+
+
+    </div>
+</body>
+</html>
