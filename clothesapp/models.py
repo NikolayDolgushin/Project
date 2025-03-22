@@ -41,3 +41,23 @@ class Clothes(models.Model):
     class Meta:
         verbose_name = "CLOTHING"
         verbose_name_plural = "CLOTHES"
+
+
+class CartItem(models.Model):
+    SIZE_CHOICES = [
+        ('S', 'S'),
+        ('M', 'M'),
+        ('L', 'L'),
+        ('XL', 'XL'),
+    ]
+    clothes = models.ForeignKey(Clothes, verbose_name="CLOTHES", on_delete=models.CASCADE)
+    size = models.CharField(verbose_name="SIZE", max_length=4, choices=SIZE_CHOICES)
+
+    def __str__(self):
+        return f"{self.clothes.name}"
+
+    class Meta:
+        verbose_name = "CART ITEM"
+        verbose_name_plural = "CART ITEMS"
+
+

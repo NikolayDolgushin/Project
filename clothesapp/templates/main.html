@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список элементов</title>
-    <style>
+{% extends 'header.html' %}
+
+{% block title %}MAIN PAGE{% endblock %}
+{% block style %}
         .item {
             margin-bottom: 20px;
             padding-bottom: 20px;
@@ -14,10 +11,18 @@
             max-width: 100%;
             height: auto;
         }
-    </style>
-</head>
-<body>
-    <h1 align="center">Список элементов</h1>
+{% endblock %}
+{% block nav %}
+    <nav>
+            <p align="center">
+                <b><u>MAIN PAGE</u></b>
+                <a href="/cart">CART</a>
+                <a>ORDERS</a>
+            </p>
+        </nav>
+{% endblock %}
+{% block content %}
+    <h1 align="center">ITEMS</h1>
     {% for item in items %}
         <div class="item" align="center">
             <!-- Изображение -->
@@ -28,5 +33,4 @@
             </a>
         </div>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
