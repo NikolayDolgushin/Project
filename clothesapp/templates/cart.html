@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список элементов</title>
+</head>
+<body>
+
+</body>
+</html>
+{% extends 'header.html' %}
+
+{% block title %}CART{% endblock %}
+
+{% block nav %}
+    <nav>
+            <p align="center">
+                <a href="/">MAIN PAGE</a>
+                <b><u>CART</u></b>
+                <a>ORDERS</a>
+            </p>
+        </nav>
+{% endblock %}
+{% block content %}
+        <h1 align="center">Список элементов</h1>
+<table align="center">
+    <thead>
+    <tr>
+        <th width="200px">ITEM</th>
+        <th width="200px">COLOR</th>
+        <th width="200px">SIZE</th>
+        <th width="200px">PRICE</th>
+    </tr>
+    </thead>
+    <tbody >
+    {% for item in items%}
+        <tr>
+            <td align="center">{{item.clothes.name}}</td>
+            <td align="center">{{item.clothes.color}}</td>
+            <td align="center">{{item.get_size_display}}</td>
+            <td align="center">{{item.clothes.price}}</td>
+        </tr>
+    {% endfor %}
+        <tr>
+            <td colspan="3" align="right"><strong>TOTAL PRICE:</strong></td>
+            <td align="center"><strong>{{ total_price }}</strong></td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

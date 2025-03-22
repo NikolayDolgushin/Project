@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    <style>
+        /* Стили для шапки */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        header a:hover {
+            text-decoration: underline;
+        }
+        {% block style %}
+        {% endblock %}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CLOTHESAPP</h1>
+        {% block nav %}
+        {% endblock %}
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <p align="center">&copy; 2025. Dolgushin Nikolai</p>
+    </footer>
+</body>
+</html>
