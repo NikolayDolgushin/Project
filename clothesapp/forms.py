@@ -6,4 +6,3 @@ class CartForm(forms.ModelForm):
     class Meta:
         model = models.CartItem
         fields = ['size']
-

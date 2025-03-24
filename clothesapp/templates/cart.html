@@ -31,6 +31,7 @@
         <th width="200px">COLOR</th>
         <th width="200px">SIZE</th>
         <th width="200px">PRICE</th>
+        <th width="200px"> </th>
     </tr>
     </thead>
     <tbody >
@@ -40,6 +41,13 @@
             <td align="center">{{item.clothes.color}}</td>
             <td align="center">{{item.get_size_display}}</td>
             <td align="center">{{item.clothes.price}}</td>
+            <td>
+                <form method="post" action="/cart">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <button type="submit" class="btn btn-danger btn-sm">X</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
         <tr>
@@ -48,4 +56,11 @@
         </tr>
     </tbody>
 </table>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
 {% endblock %}

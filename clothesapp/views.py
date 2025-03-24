@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from clothesapp import models, forms
 
@@ -8,6 +8,25 @@ class Main(ListView):
     model = models.Clothes
     template_name = 'main.html'
     context_object_name = 'items'
+
+    def get_queryset(self):
+        queryset = models.Clothes.objects.all()
+        color_filter = self.request.GET.get('color')
+        if color_filter:
+            queryset = queryset.filter(color__name=color_filter)
+        sort = self.request.GET.get('sort')
+        if sort == 'price_asc':
+            queryset = queryset.order_by('price')
+        elif sort == 'price_desc':
+            queryset = queryset.order_by('-price')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_colors'] = models.Color.objects.all()
+        context['current_color'] = self.request.GET.get('color', '')
+        context['current_sort'] = self.request.GET.get('sort', '')
+        return context
 
 
 class ClothesView(DetailView):
@@ -26,15 +45,16 @@ class ClothesView(DetailView):
 
         if form.is_valid():
             cart = form.save(commit=False)
-            cart.clothes = self.object  # Связываем заказ с текущим товаром
+            cart.clothes = self.object
             cart.save()
-            messages.success(request, 'Товар успешно добавлен в корзину!')
+            messages.success(request, 'THE ITEM HAS BEEN ADDED TO THE CART!')
             return redirect(f'/clothes/{self.object.pk}')
 
 
 class Cart(ListView):
     template_name = 'cart.html'
     context_object_name = 'items'
+
     def get_queryset(self):
         queryset = models.CartItem.objects.all()
         return queryset
@@ -45,3 +65,13 @@ class Cart(ListView):
         context['total_price'] = total_price
         return context
 
+    def post(self, request, *args, **kwargs):
+        item_id = request.POST.get('item_id')
+        if item_id:
+            try:
+                item = models.CartItem.objects.get(id=item_id)
+                item.delete()
+                messages.success(request, 'ITEM HAS BEEN DELETED FROM THE CART')
+            except models.CartItem.DoesNotExist:
+                pass
+        return redirect('/cart')

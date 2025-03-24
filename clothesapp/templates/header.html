@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Мой сайт{% endblock %}</title>
     <style>
-        /* Стили для шапки */
-        header {
-            background-color: #333;
+        {% block style %}
+        {% endblock %}
+        header{
+            background-color: #000;
             color: white;
             padding: 10px 20px;
             text-align: center;
+            font-family: "Wide Latin", sans-serif;
         }
         header a {
             color: white;
@@ -19,9 +21,28 @@
         }
         header a:hover {
             text-decoration: underline;
+            font-weight: bold;
         }
-        {% block style %}
-        {% endblock %}
+        .messages {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            font-family: "Wide Latin", sans-serif;
+            text-align: right
+        }
+         main a:link {
+            color: #000;
+        }
+        main a:visited {
+            color: #000;
+        }
+        main a:hover {
+            color: #000;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
