@@ -43,6 +43,40 @@ class Clothes(models.Model):
         verbose_name_plural = "CLOTHES"
 
 
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('processing', 'PROCESSING'),
+        ('shipped', 'SHIPPED'),
+        ('delivered', 'DELIVERED'),
+        ('picked_up', 'PUCKED UP'),
+    ]
+
+    email = models.EmailField(verbose_name="EMAIL")
+    address = models.CharField(verbose_name="АDDRESS", max_length=255)
+    items = models.TextField(verbose_name="ITEMS")
+    status = models.CharField(
+        verbose_name="STATUS",
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='processing',
+    )
+    created_at = models.DateTimeField(verbose_name="CREATION TIME", auto_now_add=True)
+
+    def __str__(self):
+        return f"ORDER #{self.id} DATED {self.created_at}"
+
+    def set_status(self, new_status):
+        if new_status in dict(self.STATUS_CHOICES).keys():
+            self.status = new_status
+            self.save()
+        else:
+            raise ValueError(f"INVALID STATUS: {new_status}")
+
+    class Meta:
+        verbose_name = "ORDER"
+        verbose_name_plural = "ORDERS"
+
+
 class CartItem(models.Model):
     SIZE_CHOICES = [
         ('S', 'S'),
@@ -59,5 +93,4 @@ class CartItem(models.Model):
     class Meta:
         verbose_name = "CART ITEM"
         verbose_name_plural = "CART ITEMS"
-
 
