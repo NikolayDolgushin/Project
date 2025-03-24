@@ -12,6 +12,14 @@ class ClothesAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'color', 'pic', 'backpic')
 
 
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('items', 'email', 'address', 'created_at', 'status')
+    list_editable = ('status',)  # Позволяет редактировать статус прямо в списке заказов
+    list_filter = ('status', 'created_at')
+    search_fields = ('email', 'address')
+
+
 @admin.register(models.CartItem)
 class CartAdmin(admin.ModelAdmin):
     list_display = ('get_clothes_name', 'get_clothes_color', 'size', 'get_clothes_price')

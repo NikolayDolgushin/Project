@@ -44,3 +44,4 @@ class Cart(ListView):
         total_price = sum(item.clothes.price for item in self.get_queryset())
         context['total_price'] = total_price
         return context
+
