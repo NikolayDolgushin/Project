@@ -1,7 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
-from django.http import JsonResponse
 from clothesapp import models, forms
 
 

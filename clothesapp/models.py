@@ -93,4 +93,3 @@ class CartItem(models.Model):
     class Meta:
         verbose_name = "CART ITEM"
         verbose_name_plural = "CART ITEMS"
-
