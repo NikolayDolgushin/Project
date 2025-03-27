@@ -1,66 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список элементов</title>
-</head>
-<body>
-
-</body>
-</html>
 {% extends 'header.html' %}
 
 {% block title %}CART{% endblock %}
-
+{% block style %}
+    .container {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .table {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-family: "courier", sans-serif;
+    }
+    .form {
+        flex: 1;
+        font-family: "courier", sans-serif;
+    }
+{% endblock %}
 {% block nav %}
     <nav>
-            <p align="center">
-                <a href="/">MAIN PAGE</a>
-                <b><u>CART</u></b>
-                <a>ORDERS</a>
-            </p>
-        </nav>
+        <p align="center">
+            <a href="/">MAIN PAGE</a>
+            <b><u>CART</u></b>
+            <a href="/orders">ORDERS</a>
+        </p>
+    </nav>
 {% endblock %}
 {% block content %}
-        <h1 align="center">Список элементов</h1>
-<table align="center">
-    <thead>
-    <tr>
-        <th width="200px">ITEM</th>
-        <th width="200px">COLOR</th>
-        <th width="200px">SIZE</th>
-        <th width="200px">PRICE</th>
-        <th width="200px"> </th>
-    </tr>
-    </thead>
-    <tbody >
-    {% for item in items%}
-        <tr>
-            <td align="center">{{item.clothes.name}}</td>
-            <td align="center">{{item.clothes.color}}</td>
-            <td align="center">{{item.get_size_display}}</td>
-            <td align="center">{{item.clothes.price}}</td>
-            <td>
-                <form method="post" action="/cart">
+    {% if items %}
+        <h1 align="center" CLASS="headfont">CART</h1>
+        <div class="container">
+            <div class="table">
+                <br>
+                <table align="center">
+                    <thead>
+                        <tr>
+                            <th>ITEM</th>
+                            <th>COLOR</th>
+                            <th>SIZE</th>
+                            <th>PRICE</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {% for item in items%}
+                            <tr>
+                                <td align="center">{{item.clothes.name}}</td>
+                                <td align="center">{{item.clothes.color}}</td>
+                                <td align="center">{{item.get_size_display}}</td>
+                                <td align="center">{{item.clothes.price}}</td>
+                                <td>
+                                    <form method="post" action="/cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">X</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3" align="right"><strong>TOTAL PRICE:</strong></td>
+                            <td colspan="2" align="left"><strong>{{ total_price }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form">
+                <p>Order Details</p>
+                <form method="post" action="/payment">
                     {% csrf_token %}
-                    <input type="hidden" name="item_id" value="{{ item.id }}">
-                    <button type="submit" class="btn btn-danger btn-sm">X</button>
+                    {{ order_form.as_p }}
+                    <button type="submit" class="bodyfont">
+                        Proceed to Payment
+                    </button>
                 </form>
-            </td>
-        </tr>
-    {% endfor %}
-        <tr>
-            <td colspan="3" align="right"><strong>TOTAL PRICE:</strong></td>
-            <td align="center"><strong>{{ total_price }}</strong></td>
-        </tr>
-    </tbody>
-</table>
-{% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    </div>
-{% endif %}
+            </div>
+        </div>
+    {% else %}
+    <h1 align="center" class="headfont">NO ITEMS IN THE CART YET</h1>
+    {% endif %}
 {% endblock %}

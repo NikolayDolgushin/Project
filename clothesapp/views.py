@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from django.views import View
 from django.views.generic import ListView, DetailView
 from clothesapp import models, forms
 
@@ -36,7 +37,7 @@ class ClothesView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['cart_form'] = forms.CartForm()  # Добавляем форму в контекст
+        context['cart_form'] = forms.CartForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -63,9 +64,10 @@ class Cart(ListView):
         context = super().get_context_data(**kwargs)
         total_price = sum(item.clothes.price for item in self.get_queryset())
         context['total_price'] = total_price
+        context['order_form'] = forms.OrderForm()
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         item_id = request.POST.get('item_id')
         if item_id:
             try:
@@ -75,3 +77,30 @@ class Cart(ListView):
             except models.CartItem.DoesNotExist:
                 pass
         return redirect('/cart')
+
+
+class PaymentView(View):
+    def post(self, request):
+        cart_items = models.CartItem.objects.all()
+        if cart_items.exists():
+            items_str = "\n".join(
+                f"{item.clothes.name} {item.clothes.color.name} {item.get_size_display()}"
+                for item in cart_items
+            )
+            models.Order.objects.create(
+                email=request.POST.get('email'),
+                address=request.POST.get('address'),
+                items=items_str,
+                status='processing'
+            )
+            cart_items.delete()
+        return render(request, 'payment.html')
+
+
+class Order(ListView):
+    template_name = 'order.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        queryset = models.Order.objects.all()
+        return queryset

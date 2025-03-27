@@ -1,50 +1,49 @@
 {% extends 'header.html' %}
-
 {% block title %}{{ items.name }}{% endblock %}
 {% block style %}
-         .container {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-        }
-        .images {
+    .container {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .images {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .info {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .info {
-            flex: 1;
-        }
-        .images img {
-            max-width: 75%;
-            height: auto;
-        }
+    }
+    .images img {
+        max-width: 75%;
+        height: auto;
+    }
 
 {% endblock %}
 {% block nav %}
     <nav>
-            <p align="center">
-                <a href="/">MAIN PAGE</a>
-                <a href="/cart">CART</a>
-                <a>ORDERS</a>
-            </p>
-        </nav>
+        <p align="center">
+            <a href="/">MAIN PAGE</a>
+            <a href="/cart">CART</a>
+            <a href="/orders">ORDERS</a>
+        </p>
+    </nav>
 {% endblock %}
 {% block content %}
-      <div class="container">
+    <div class="container">
         <div class="images">
             <img src="{{ items.pic.url }}" alt="{{ clothes.name }}">
             <img src="{{ items.backpic.url }}" alt="Задняя сторона {{ clothes.name }}">
         </div>
         <div class="info">
-            <h1>{{ items.name }}</h1>
-            <p><strong>Цвет:</strong> {{ items.color.name }}</p>
-            <p><strong>Цена:</strong> {{ items.price }} руб.</p>
-            <form method="post">
+            <h1 class="headfont">{{ items.name }}</h1>
+            <p class="bodyfont">COLOR: {{ items.color.name }}</p>
+            <p class="bodyfont">PRICE: {{ items.price }} руб.</p>
+            <form method="post" class="bodyfont">
                 {% csrf_token %}
                 {{ cart_form.as_p }}
-                <button type="submit">Добавить в корзину</button>
+                <button type="submit" class="bodyfont">Добавить в корзину</button>
             </form>
             {% if messages %}
                 <div class="messages">
@@ -54,6 +53,5 @@
                 </div>
             {% endif %}
         </div>
-
     </div>
 {% endblock %}

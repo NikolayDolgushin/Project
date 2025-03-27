@@ -30,7 +30,7 @@
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
-            font-family: "Wide Latin", sans-serif;
+            font-family: "courier", sans-serif;
             text-align: right
         }
          main a:link {
@@ -42,6 +42,22 @@
         main a:hover {
             color: #000;
             font-weight: bold;
+        }
+        .headfont{
+            font-family: "Wide Latin", sans-serif;
+        }
+        .bodyfont{
+            font-family: "courier", sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: "courier", sans-serif;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
     </style>
 </head>
@@ -55,10 +71,8 @@
         {% block content %}
         {% endblock %}
     </main>
-
-    <!-- Подвал сайта -->
     <footer>
-        <p align="center">&copy; 2025. Dolgushin Nikolai</p>
+        <p align="center" class="bodyfont">&copy; 2025. Dolgushin Nikolai</p>
     </footer>
 </body>
 </html>

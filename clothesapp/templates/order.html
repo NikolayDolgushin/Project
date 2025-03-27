@@ -1,0 +1,50 @@
+{% extends 'header.html' %}
+
+{% block title %}ORDERS{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block nav %}
+    <nav>
+            <p align="center">
+                <a href="/">MAIN PAGE</a>
+                <a href="/cart" >CART</a>
+                <b><u>ORDERS</u></b>
+            </p>
+        </nav>
+{% endblock %}
+{% block content %}
+{% if orders %}
+
+   <table border="1">
+        <thead>
+            <tr>
+                <th width="200px">Order</th>
+                <th width="200px">Date</th>
+                <th width="200px">Status</th>
+                <th width="200px">Items</th>
+                <th width="200px">Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.created_at|date:"d.m.Y" }}</td>
+                <td>
+                        {{ order.get_status_display }}
+                </td>
+                <td>
+                    {% for item in order.items.splitlines %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </td>
+                <td>{{ order.address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+<h1 align="center" class="headfont">NO ORDERS YET</h1>
+{% endif %}
+{% endblock %}

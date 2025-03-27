@@ -1,12 +1,11 @@
 {% extends 'header.html' %}
-
 {% block title %}MAIN PAGE{% endblock %}
 {% block style %}
-
-        .item {
+    .item {
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #000;
+            font-family: "courier", sans-serif;
         }
         .item img {
             max-width: 100%;
@@ -20,42 +19,47 @@
         .filters select, .filters button {
         padding: 8px;
         margin: 0 5px;
+        font-family: "courier", sans-serif;
         }
 {% endblock %}
 {% block nav %}
     <nav>
-            <p align="center">
-                <b><u>MAIN PAGE</u></b>
-                <a href="/cart" >CART</a>
-                <a>ORDERS</a>
-            </p>
-        </nav>
+       <p align="center">
+           <b><u>MAIN PAGE</u></b>
+           <a href="/cart" >CART</a>
+           <a href="/orders">ORDERS</a>
+       </p>
+    </nav>
 {% endblock %}
 {% block content %}
-    <h1 align="center">ITEMS</h1>
+    <h1 align="center" class="headfont">ITEMS</h1>
     <div class="filters">
         <form method="get" action="">
-            <select name="color">
-                <option value="">ALL COLORS</option>
-                {% for color in all_colors %}
-                <option value="{{ color.name }}"
-                        {% if current_color == color.name %}selected{% endif %}>
-                    {{ color.name }}
-                </option>
-                {% endfor %}
-            </select>
+             <select name="color">
+                 <option value="">ALL COLORS</option>
+                 {% for color in all_colors %}
+                    <option value="{{ color.name }}"
+                        {% if current_color == color.name %}
+                            selected
+                        {% endif %}>
+                        {{ color.name }}
+                    </option>
+                 {% endfor %}
+             </select>
 
-            <select name="sort">
-                <option value="">SORT</option>
-                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>
-                    PRICE (LOW TO HIGH)
-                </option>
-                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>
-                    PRICE (HIGH TO LOW)
-                </option>
-            </select>
+                <select name="sort">
+                    <option value="">SORT</option>
+                    <option value="price_asc"
+                            {% if current_sort == 'price_asc' %}
+                                selected{% endif %}>
+                        PRICE (LOW TO HIGH)
+                    </option>
+                    <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>
+                        PRICE (HIGH TO LOW)
+                    </option>
+                </select>
 
-            <button type="submit">APPLY</button>
+                <button type="submit">APPLY</button>
         </form>
     </div>
     {% for item in items %}

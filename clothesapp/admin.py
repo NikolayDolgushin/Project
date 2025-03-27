@@ -15,9 +15,8 @@ class ClothesAdmin(admin.ModelAdmin):
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('items', 'email', 'address', 'created_at', 'status')
-    list_editable = ('status',)  # Позволяет редактировать статус прямо в списке заказов
-    list_filter = ('status', 'created_at')
-    search_fields = ('email', 'address')
+    list_editable = ('status', )
+    list_filter = ('created_at', )
 
 
 @admin.register(models.CartItem)
@@ -26,11 +25,11 @@ class CartAdmin(admin.ModelAdmin):
 
     def get_clothes_name(self, obj):
         return obj.clothes.name
-    get_clothes_name.short_description = 'NAME'  # Заголовок колонки в админке
+    get_clothes_name.short_description = 'NAME'
 
     def get_clothes_color(self, obj):
         return obj.clothes.color
-    get_clothes_color.short_description = 'COLOR'  # Заголовок колонки в админке
+    get_clothes_color.short_description = 'COLOR'
 
     def get_clothes_price(self, obj):
         return obj.clothes.price
