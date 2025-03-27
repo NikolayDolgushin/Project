@@ -1,0 +1,30 @@
+version: '3.8'
+name: 'project'
+services:
+  db:
+
+    image: postgres:13
+    container_name: postgres
+
+    environment:
+
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  web:
+    build: .
+    container_name: project
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: db
+      DB_PORT: ${DB_PORT}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+volumes:
+  postgres_data:
