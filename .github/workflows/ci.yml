@@ -2,53 +2,52 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
-    branches:
-      - master
+    branches: [master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      mysql:
-        image: mysql:latest
+      postgres:
+        image: postgres:latest
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12.3'
 
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev
-
-      - name: Upgrade pip
-        run: pip install --upgrade pip
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run migrations
-        run: python manage.py migrate
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run tests
-        run: python manage.py test
-
+        env:
+          GITHUB_ACTIONS: 'true'
+        run: |
+          python manage.py migrate
+          python manage.py test
   linter:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -58,8 +57,7 @@ jobs:
       - name: Install flake8
         run: pip install flake8
 
-      - name: Run flake8 on clothesapp
-        run: flake8 clothesapp
-
-      - name: Run flake8 on project
-        run: flake8 project
+      - name: Run flake8 checks
+        run: |
+          flake8 clothesapp
+          flake8 project

@@ -43,7 +43,6 @@ class ClothesView(DetailView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = forms.CartForm(request.POST)
-
         if form.is_valid():
             cart = form.save(commit=False)
             cart.clothes = self.object
@@ -102,5 +101,13 @@ class Order(ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        queryset = models.Order.objects.all()
+        email_filter = self.request.GET.get('email')
+        queryset = models.Order.objects.all().order_by('-created_at')
+        if email_filter:
+            queryset = queryset.filter(email=email_filter)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_email'] = self.request.GET.get('email', '')
+        return context
