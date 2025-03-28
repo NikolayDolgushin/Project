@@ -40,7 +40,26 @@ jobs:
 
       - name: Run tests
         env:
-          GITHUB_ACTIONS: 'true'  # Активируем CI-специфичные настройки
+          GITHUB_ACTIONS: 'true'
         run: |
           python manage.py migrate
           python manage.py test
+
+  # Добавленная задача линтера
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.3'
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8 checks
+        run: |
+          flake8 clothesapp
+          flake8 project
