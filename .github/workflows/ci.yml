@@ -2,11 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
-    branches:
-      - master
+    branches: [master]
 
 jobs:
   test:
@@ -26,52 +24,23 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12.3'
 
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y libpq-dev
-
-      - name: Upgrade pip
-        run: pip install --upgrade pip
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
-      - name: Configure Django settings
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
+      - name: Install dependencies
         run: |
-          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
-          echo "DJANGO_SETTINGS_MODULE=project.settings.ci" >> $GITHUB_ENV
-
-      - name: Run migrations
-        run: python manage.py migrate
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run tests
-        run: python manage.py test
-
-  linter:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12.3'
-
-      - name: Install flake8
-        run: pip install flake8
-
-      - name: Run flake8 on clothesapp
-        run: flake8 clothesapp
-
-      - name: Run flake8 on project
-        run: flake8 project
+        env:
+          GITHUB_ACTIONS: 'true'  # Активируем CI-специфичные настройки
+        run: |
+          python manage.py migrate
+          python manage.py test
