@@ -12,13 +12,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      mysql:
+      postgres:
         image: postgres:latest
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: testdb
         ports:
-          - 3306:3306
+          - 5432:5432
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout repository
