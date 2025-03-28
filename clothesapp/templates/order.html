@@ -14,37 +14,43 @@
         </nav>
 {% endblock %}
 {% block content %}
-{% if orders %}
-
-   <table border="1">
-        <thead>
-            <tr>
-                <th width="200px">Order</th>
-                <th width="200px">Date</th>
-                <th width="200px">Status</th>
-                <th width="200px">Items</th>
-                <th width="200px">Address</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr>
-                <td>{{ order.id }}</td>
-                <td>{{ order.created_at|date:"d.m.Y" }}</td>
-                <td>
-                        {{ order.get_status_display }}
-                </td>
-                <td>
-                    {% for item in order.items.splitlines %}
-                        <li>{{ item }}</li>
-                    {% endfor %}
-                </td>
-                <td>{{ order.address }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-<h1 align="center" class="headfont">NO ORDERS YET</h1>
+<form method="get"  >
+    <input type="email" name="email" value="{{ current_email }}"
+           placeholder="YOUR E-MAIL">
+    <button type="submit" class="bodyfont">SHOW</button>
+</form>
+{% if current_email %}
+   {% if orders %}
+       <table border="1">
+            <thead>
+                <tr>
+                    <th width="200px">Order</th>
+                    <th width="200px">Date</th>
+                    <th width="200px">Status</th>
+                    <th width="200px">Items</th>
+                    <th width="200px">Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.created_at|date:"d.m.Y" }}</td>
+                    <td>
+                            {{ order.get_status_display }}
+                    </td>
+                    <td>
+                        {% for item in order.items.splitlines %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </td>
+                    <td>{{ order.address }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h1 align="center" class="headfont">NO ORDERS YET</h1>
+    {% endif %}
 {% endif %}
 {% endblock %}
